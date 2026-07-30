@@ -28,6 +28,33 @@ app.use((request, response, next) => {
   next();
 });
 
+app.get('/', (_request, response) => {
+  response.status(200).send(`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OctoFit Tracker API</title>
+    <style>
+      body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; margin: 2rem; line-height: 1.5; }
+      h1 { margin-bottom: 0.5rem; }
+      ul { padding-left: 1.2rem; }
+      a { color: #0f766e; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>OctoFit Tracker API</h1>
+    <p>The API is running on port 8000.</p>
+    <ul>
+      <li><a href="/api/health">GET /api/health</a></li>
+      <li><a href="/api/users">GET /api/users</a></li>
+      <li><a href="/api/activities">GET /api/activities</a></li>
+    </ul>
+  </body>
+</html>`);
+});
+
 app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok', service: 'OctoFit Tracker API' });
 });
