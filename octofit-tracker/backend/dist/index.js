@@ -7,7 +7,11 @@ const express_1 = __importDefault(require("express"));
 require("./config/database");
 const routes_1 = __importDefault(require("./routes"));
 const app = (0, express_1.default)();
-const port = Number(process.env.PORT) || 8000;
+const port = 8000;
+function getApiBaseUrl() {
+    const codespaceName = process.env.CODESPACE_NAME;
+    return codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+}
 app.use(express_1.default.json());
 app.use((request, response, next) => {
     const allowedOrigin = process.env.CODESPACE_NAME
@@ -35,9 +39,5 @@ app.use((error, _request, response, _next) => {
     response.status(status).json({ message: status === 409 ? 'That record already exists.' : 'Something went wrong.' });
 });
 app.listen(port, '0.0.0.0', () => {
-    const codespaceName = process.env.CODESPACE_NAME;
-    const baseUrl = codespaceName
-        ? `https://${codespaceName}-${port}.app.github.dev`
-        : `http://localhost:${port}`;
-    console.log(`OctoFit Tracker API running at ${baseUrl}`);
+    console.log(`OctoFit Tracker API running at ${getApiBaseUrl()}`);
 });

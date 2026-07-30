@@ -3,7 +3,12 @@ import './config/database';
 import apiRouter from './routes';
 
 const app = express();
-const port = Number(process.env.PORT) || 8000;
+const port = 8000;
+
+function getApiBaseUrl(): string {
+  const codespaceName = process.env.CODESPACE_NAME;
+  return codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+}
 
 app.use(express.json());
 app.use((request, response, next) => {
@@ -40,10 +45,5 @@ app.use((error: Error & { code?: number }, _request: express.Request, response: 
 });
 
 app.listen(port, '0.0.0.0', () => {
-  const codespaceName = process.env.CODESPACE_NAME;
-  const baseUrl = codespaceName
-    ? `https://${codespaceName}-${port}.app.github.dev`
-    : `http://localhost:${port}`;
-
-  console.log(`OctoFit Tracker API running at ${baseUrl}`);
+  console.log(`OctoFit Tracker API running at ${getApiBaseUrl()}`);
 });
